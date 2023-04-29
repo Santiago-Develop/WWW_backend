@@ -66,6 +66,7 @@ class User(models.Model):
         choices=Roles.choices,
         default=Roles.CUSTOMER,
     )
+    password = models.CharField(default="", blank=False, null=False)
     id_country = models.ForeignKey(Country, on_delete=models.CASCADE)
     id_department = models.ForeignKey(Department, on_delete=models.CASCADE)
     id_city = models.ForeignKey(City, on_delete=models.CASCADE)
