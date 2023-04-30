@@ -14,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
             'urlImg',
             'email',
             'role',
+            'password',
             'id_country',
             'id_department',
             'id_city',
