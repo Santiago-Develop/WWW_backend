@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 class Country(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, blank=False, null=False)
+    name = models.CharField(max_length=100, blank=False, null=False, unique=True)
 
     class Meta:
         verbose_name = "Country"
@@ -17,7 +17,7 @@ class Country(models.Model):
     
 class Department(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, blank=False, null=False)
+    name = models.CharField(max_length=100, blank=False, null=False, unique=True)
     id_country = models.ForeignKey(Country, on_delete=models.CASCADE)
 
     class Meta:
@@ -30,7 +30,7 @@ class Department(models.Model):
     
 class City(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, blank=False, null=False)
+    name = models.CharField(max_length=100, blank=False, null=False, unique=True)
     id_department = models.ForeignKey(Department, on_delete=models.CASCADE)
 
     class Meta:
@@ -99,6 +99,11 @@ class Engagement(models.Model):
     id_customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="id_customer_engagement")
     id_messager = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = "Engagement"
+        verbose_name_plural = "Engagements"
+        ordering = ["id"]
+
 class Service(models.Model):
 
     class Transports(models.TextChoices):
@@ -113,7 +118,7 @@ class Service(models.Model):
         choices=Transports.choices,
         default=Transports.MOTORCYCLE,
     )
-    datetime = models.DateTimeField(auto_now_add=True, auto_now=False)
+    date_time = models.DateTimeField(auto_now_add=True, auto_now=False)
     description = models.CharField(max_length=100, blank=False, null=False)
     id_customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="id_customer_service")
     id_messager = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -142,17 +147,17 @@ class State(models.Model):
     
 class Update(models.Model):
     id = models.AutoField(primary_key=True)
-    newState = models.CharField(max_length=100, blank=False, null=False)
+    new_state = models.CharField(max_length=100, blank=False, null=False)
     photo = models.CharField(max_length=100, blank=False, null=False)
     description = models.CharField(max_length=100, blank=False, null=False)
-    currentDatetime = models.DateTimeField(auto_now_add=True, auto_now=False)
+    current_date_time = models.DateTimeField(auto_now_add=True, auto_now=False)
     id_service = models.ForeignKey(Service, on_delete=models.CASCADE)
     id_state = models.ForeignKey(State, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "State"
         verbose_name_plural = "States"
-        ordering = ["description"]
+        ordering = ["id"]
 
     def __str__(self):
-        return self.description
+        return self.id
