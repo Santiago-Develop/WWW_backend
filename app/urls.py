@@ -1,12 +1,9 @@
-from app.api import ClienteViewSet, MensajeroViewSet, SucursalViewSet, CiudadViewSet
+from app.api import *
 from rest_framework import routers
-
 
 router = routers.DefaultRouter()
 
-router.register('api/cliente', ClienteViewSet, 'cliente')
-router.register('api/mensajero', MensajeroViewSet, 'mensajero')
-router.register('api/sucursal', SucursalViewSet, 'sucursal')
-router.register('api/ciudad', CiudadViewSet, 'ciudad')
+router.register('api/user', UserViewSet, 'user')
+
 
 urlpatterns = router.urls
