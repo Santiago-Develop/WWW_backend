@@ -1,5 +1,7 @@
-from app.api import *
 from rest_framework import routers
+from app.api import *
+from app.views import *
+from django.urls import path
 
 router = routers.DefaultRouter()
 
@@ -13,4 +15,9 @@ router.register('api/service', ServiceViewSet, 'service')
 router.register('api/state', StateViewSet, 'state')
 router.register('api/update', UpdateViewSet, 'update')
 
-urlpatterns = router.urls
+
+urlpatterns = [
+    path('api/login', Login.as_view()),
+]
+
+urlpatterns += router.urls
