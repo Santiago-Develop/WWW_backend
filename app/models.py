@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
@@ -41,7 +42,7 @@ class City(models.Model):
     def __str__(self):
         return self.name
 
-class User(models.Model):
+class User(AbstractUser):
 
     class DocumentTypes(models.TextChoices):
         NIT = "NIT", _("NIT")
@@ -53,7 +54,7 @@ class User(models.Model):
         MESSAGER = "MESSAGER", _("Messager")
 
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, blank=False, null=False)
+    username = models.CharField(max_length=100, blank=False, null=False, unique = True)
     documentType = models.CharField(
         choices=DocumentTypes.choices,
         default=DocumentTypes.CC,
@@ -61,7 +62,7 @@ class User(models.Model):
     documentNumber = models.CharField(max_length=100, blank=False, null=False)
     phone = models.IntegerField(blank=False, null=False)
     urlImg = models.CharField(blank=False, null=False)
-    email = models.EmailField(max_length=100, blank=False, null=False)
+    email = models.EmailField(max_length=100, blank=False, null=False, unique = True)
     role = models.CharField(
         choices=Roles.choices,
         default=Roles.CUSTOMER,
@@ -74,10 +75,10 @@ class User(models.Model):
     class Meta:
         verbose_name = "User"
         verbose_name_plural = "Users"
-        ordering = ["name"]
+        ordering = ["username"]
 
     def __str__(self):
-        return self.name
+        return self.username
 
 class Office(models.Model):
     id = models.AutoField(primary_key=True)
