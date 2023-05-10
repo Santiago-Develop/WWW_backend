@@ -57,7 +57,7 @@ ROOT_URLCONF = 'drf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'www_db',
         'USER': 'postgres',
-        'PASSWORD': 'santiago123',
+        'PASSWORD': 'pg123',
         'HOST': 'localhost',
         'DATABASE_PORT': '5432',
     }
