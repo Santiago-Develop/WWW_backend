@@ -71,9 +71,9 @@ class City(generics.ListCreateAPIView):
     authentication_class = (TokenAuthentication,)
 
 class User(generics.ListCreateAPIView):
-    queryset = User.objects.all()
+    queryset = User.objects.filter(role='CUSTOMER') | User.objects.filter(role='MESSAGER')
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated,)
+    #permission_classes = (IsAuthenticated,)
     authentication_class = (TokenAuthentication,)
 
 class Office(generics.ListCreateAPIView):
@@ -105,7 +105,6 @@ class Update(generics.ListCreateAPIView):
     serializer_class =UpdateSerializer
     permission_classes = (IsAuthenticated,)
     authentication_class = (TokenAuthentication,)
-
 
 class Login(FormView):
     template_name = 'login.html'

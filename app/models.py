@@ -49,7 +49,7 @@ class User(AbstractUser):
         CC = "CC", _("CC")
 
     class Roles(models.TextChoices):
-        ADMIN = "ADMIN", _("Administrator")
+        #ADMIN = "ADMIN", _("Administrator")
         CUSTOMER = "CUSTOMER", _("Customer")
         MESSAGER = "MESSAGER", _("Messager")
 
@@ -65,12 +65,16 @@ class User(AbstractUser):
     email = models.EmailField(max_length=100, blank=False, null=False, unique = True)
     role = models.CharField(
         choices=Roles.choices,
-        default=Roles.CUSTOMER,
     )
     password = models.CharField(default="", blank=False, null=False)
     id_country = models.ForeignKey(Country, on_delete=models.CASCADE)
     id_department = models.ForeignKey(Department, on_delete=models.CASCADE)
     id_city = models.ForeignKey(City, on_delete=models.CASCADE)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(default=False)
+    last_login = models.DateTimeField(auto_now_add=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "User"
@@ -79,7 +83,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-
+    
 class Office(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, blank=False, null=False)

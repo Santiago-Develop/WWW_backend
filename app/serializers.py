@@ -34,7 +34,20 @@ class CitySerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = (
+            'id',
+            'username',
+            'password',
+            'documentType',
+            'documentNumber',
+            'phone',
+            'urlImg',
+            'email',
+            'role',
+            'id_country',
+            'id_department',
+            'id_city'
+        )
 
     def create(self, validated_data):
         user = User(**validated_data)
