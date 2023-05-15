@@ -49,7 +49,7 @@ class User(AbstractUser):
         CC = "CC", _("CC")
 
     class Roles(models.TextChoices):
-        #ADMIN = "ADMIN", _("Administrator")
+        ADMIN = "ADMIN", _("Administrator")
         CUSTOMER = "CUSTOMER", _("Customer")
         MESSAGER = "MESSAGER", _("Messager")
 
