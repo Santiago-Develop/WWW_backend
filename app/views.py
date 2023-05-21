@@ -102,6 +102,13 @@ class Engagement(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     authentication_class = (TokenAuthentication,)
 
+    def get_queryset(self):
+        user = self.request.user
+        qs = super().get_queryset()
+        if not user.is_superuser:
+            qs = qs.filter(id_customer=user.id)
+        return qs
+
 class Service(generics.ListCreateAPIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer

@@ -117,7 +117,7 @@ class Service(models.Model):
         TRUCK = "TRUCK", _("truck")
 
     id = models.AutoField(primary_key=True)
-    code = models.CharField(max_length=100, blank=False, null=False)
+    #code = models.CharField(max_length=100, blank=False, null=False)
     amount = models.IntegerField(blank=False, null=False)
     transport = models.CharField(
         choices=Transports.choices,
