@@ -89,7 +89,7 @@ class Office(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
     address = models.CharField(max_length=100, blank=False, null=False)
     phone = models.IntegerField(blank=False, null=False)
-    id_customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="id_customer_office")
+    id_customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="id_customer_office", blank=False, null=False)
 
     class Meta:
         verbose_name = "Office"
@@ -133,7 +133,7 @@ class Service(models.Model):
     class Meta:
         verbose_name = "Service"
         verbose_name_plural = "Services"
-        ordering = ["code"]
+        ordering = ["id"]
 
     def __str__(self):
         return self.code

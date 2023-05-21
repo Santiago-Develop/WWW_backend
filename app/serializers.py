@@ -12,6 +12,7 @@ class CountrySerializer(serializers.ModelSerializer):
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
+    id_country = serializers.CharField(source = 'id_country.name')
     class Meta:
         model = Department
         fields = (
@@ -22,6 +23,7 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
 
 class CitySerializer(serializers.ModelSerializer):
+    id_department = serializers.CharField(source = 'id_department.name')
     class Meta:
         model = City
         fields = (
@@ -32,6 +34,9 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    id_country = serializers.CharField(source = 'id_country.name')
+    id_department = serializers.CharField(source = 'id_department.name')
+    id_city = serializers.CharField(source = 'id_city.name')
     class Meta:
         model = User
         fields = (
@@ -67,6 +72,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = ('role','urlImg','first_name','last_name', 'id')
 
 class OfficeSerializer(serializers.ModelSerializer):
+    id_customer = serializers.CharField(source = 'id_customer.username')
     class Meta:
         model = Office
         fields = (
@@ -79,6 +85,8 @@ class OfficeSerializer(serializers.ModelSerializer):
 
 
 class EngagementSerializer(serializers.ModelSerializer):
+    id_customer = serializers.CharField(source = 'id_customer.username')
+    id_messager = serializers.CharField(source = 'id_messager.username')
     class Meta:
         model = Engagement
         fields = (
