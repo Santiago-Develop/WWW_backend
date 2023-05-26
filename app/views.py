@@ -132,7 +132,7 @@ class Login(FormView):
     form_class = AuthenticationForm
     success_url = reverse_lazy('user')
 
-    @method_decorator(csrf_protect)
+    # @method_decorator(csrf_protect)
     @method_decorator(never_cache)
 
     def dispatch(self, request, *args, **kwargs):

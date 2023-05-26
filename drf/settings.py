@@ -25,9 +25,11 @@ SECRET_KEY = 'django-insecure-rgeh1$@az@9(ped34h$w&u36il%#ly3-#4zr7!^j!ku8yx0%yw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+CORS_ALLOWED_ORIGINS  = ['http://localhost:5173']
 
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
 
+CSRF_COOKIE_SECURE = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -50,7 +53,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+
 
 ROOT_URLCONF = 'drf.urls'
 
@@ -85,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'www_db',
         'USER': 'postgres',
-        'PASSWORD': 'pg123',
+        'PASSWORD': 'santiago123',
         'HOST': 'localhost',
         'DATABASE_PORT': '5432',
     }
