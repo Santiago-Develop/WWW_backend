@@ -79,8 +79,7 @@ class User(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         qs = super().get_queryset()
-        if not user.is_superuser:
-            qs = qs.filter(id=user.id)
+        qs = qs.filter(id=user.id)
         return qs
 
 class Office(generics.ListCreateAPIView):
