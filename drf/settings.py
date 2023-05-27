@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'corsheaders',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -91,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'www_db',
         'USER': 'postgres',
-        'PASSWORD': 'santiago123',
+        'PASSWORD': 'pg123',
         'HOST': 'localhost',
         'DATABASE_PORT': '5432',
     }
@@ -138,4 +138,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'app.User'
+AUTH_USER_MODEL = 'app.AppUser'

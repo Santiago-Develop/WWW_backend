@@ -23,7 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app.urls')),
     #path('api/', include(('app.urls', 'api'))),
-    path('api_generate_token/', views.obtain_auth_token),
-    path('login/', csrf_exempt(Login.as_view()), name = 'login'),
-    path('logout/', Logout.as_view(), name = 'logout'),
+    #path('api_generate_token/', views.obtain_auth_token),
+    #path('logout/', Logout.as_view(), name = 'logout'),
 ]
