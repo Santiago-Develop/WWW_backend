@@ -71,17 +71,18 @@ class City(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     authentication_class = (TokenAuthentication,)
 
-# class User(generics.ListCreateAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#     #permission_classes = (IsAuthenticated,)
-#     authentication_class = (TokenAuthentication,)
+class User(generics.ListCreateAPIView):
+    queryset = AppUser.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,)
+    authentication_class = (TokenAuthentication,)
 
-#     def get_queryset(self):
-#         user = self.request.user
-#         qs = super().get_queryset()
-#         qs = qs.filter(id=user.id)
-#         return qs
+    def get_queryset(self):
+        user = self.request.user
+        qs = super().get_queryset()
+        if not user.is_superuser:
+            qs = qs.filter(email=user.email)
+        return qs
 
 class Office(generics.ListCreateAPIView):
     queryset = Office.objects.all()
