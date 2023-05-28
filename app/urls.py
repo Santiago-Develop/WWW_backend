@@ -30,6 +30,6 @@ urlpatterns = [
     path('api/update', Update.as_view(), name = 'update'),
     path('register', UserRegister.as_view(), name = 'register'),
     path('login', UserLogin.as_view(), name = 'login'),
-    #path('logout', UserLogout.as_view(), name = 'logout'),
+    path('logout', UserLogout.as_view(), name = 'logout'),
     path('user', UserView.as_view(), name = 'user')
 ]

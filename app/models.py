@@ -189,7 +189,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     class Roles(models.TextChoices):
         ADMIN = "ADMIN", _("Administrator")
         CUSTOMER = "CUSTOMER", _("Customer")
-        MESSAGER = "MESSAGER", _("Messager")
+        MESSAGER = "MESSENGER", _("Messenger")
 
     documentType = models.CharField(
         choices=DocumentTypes.choices,
@@ -198,7 +198,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     )
     documentNumber = models.CharField(max_length=100, blank=False, null=False)
     phone = models.IntegerField(blank=False, null=False)
-    urlImg = models.CharField(blank=False, null=False, max_length=1000)
+    urlImg = models.CharField(blank=False, null=False, max_length=10000)
     role = models.CharField(
         choices=Roles.choices,
         max_length=1000

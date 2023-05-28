@@ -33,44 +33,6 @@ class CitySerializer(serializers.ModelSerializer):
         )
 
 
-# class UserSerializer(serializers.ModelSerializer):
-#     country = serializers.CharField(source = 'country.name')
-#     department = serializers.CharField(source = 'department.name')
-#     city = serializers.CharField(source = 'city.name')
-#     class Meta:
-#         model = User
-#         fields = (
-#             'id',
-#             'username',
-#             'password',
-#             'documentType',
-#             'documentNumber',
-#             'phone',
-#             'urlImg',
-#             'email',
-#             'role',
-#             'country',
-#             'department',
-#             'city'
-#         )
-
-#     def create(self, validated_data):
-#         user = User(**validated_data)
-#         user.set_password(validated_data['password'])
-#         user.save()
-#         return user
-
-#     def update(self, instance, validated_data):
-#         updated_user = super().update(instance, validated_data)
-#         updated_user.set_password(validated_data['password'])
-#         updated_user.save()
-#         return updated_user
-
-# class CustomUserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ('role','urlImg','first_name','last_name', 'id')
-
 class OfficeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Office
@@ -175,13 +137,17 @@ class UserLoginSerializer(serializers.Serializer):
             email=clean_data['email'], password=clean_data['password'])
         
         user_info = UserModel.objects.get(email=clean_data['email'])
-        print("user_info: ", user_info)
+        
         if not user:
             raise ValidationError('user not found')
-        return user
+        return user_info
 
 
 class UserSerializer(serializers.ModelSerializer):
+    country = serializers.StringRelatedField()
+    department = serializers.StringRelatedField()
+    city = serializers.StringRelatedField()
+    
     class Meta:
         model = UserModel
         fields = '__all__'
