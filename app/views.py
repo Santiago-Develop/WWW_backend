@@ -166,20 +166,16 @@ class UserView(APIView):
 @api_view(['GET'])
 def get_user(request, pk):
     try:
-        user = AppUser.objects.get(user_id=request.user.user_id)
-        if user.is_superuser == True:
+        if request.method == 'GET':
             userApp = AppUser.objects.get(user_id=pk)
-        else:
-            return Response({"error": True, "message": "Unauthorized user"}, status=status.HTTP_401_UNAUTHORIZED)
+            serializer = UserSerializer(
+                userApp, many=False, context={'request': request})
+            return Response(serializer.data)
     except:
-        return Response({"error": True, "message": "You must be logged in to view users"}, status=status.HTTP_404_NOT_FOUND)
-    if request.method == 'GET':
-        serializer = UserSerializer(
-            userApp, many=False, context={'request': request})
-        return Response(serializer.data)
+        return Response({"error": True, "message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
     
 @api_view(['GET'])
-def get_city(request, pk):
+def get_office(request, pk):
     try:
         user = AppUser.objects.get(user_id=request.user.user_id)
         if user.is_superuser == True:

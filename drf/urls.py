@@ -19,12 +19,11 @@ from django.urls import path, include
 from rest_framework.authtoken import views
 from app.views import *
 from django.views.decorators.csrf import csrf_exempt
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app.urls')),
-    #path('api/', include(('app.urls', 'api'))),
-    #path('api_generate_token/', views.obtain_auth_token),
     path('logout/', UserLogout.as_view(), name = 'logout'),
     path('api/user/<int:pk>/', get_user, name="get_user"),
-    path('api/city/<int:pk>/', get_city, name="get_user")
+    path('api/office/<int:pk>/', get_office, name="get_user")
 ]
