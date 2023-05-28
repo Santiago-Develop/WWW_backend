@@ -105,7 +105,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     )
     documentNumber = models.CharField(
         max_length=100, blank=False, null=False, unique=True)
-    phone = models.CharField(blank=False, null=False, unique=True)
+    phone = models.CharField(blank=False, null=False, unique=True, max_length=100)
     urlImg = models.CharField(blank=False, null=False, max_length=10000)
     role = models.CharField(
         choices=Roles.choices,
@@ -134,7 +134,7 @@ class Office(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, blank=False, null=False)
     address = models.CharField(max_length=100, blank=False, null=False)
-    phone = models.CharField(blank=False, null=False, unique=True)
+    phone = models.CharField(blank=False, null=False, unique=True, max_length=100)
     customer = models.ForeignKey(AppUser, on_delete=models.CASCADE,
                                  related_name="id_customer_office", blank=True, null=True)
 

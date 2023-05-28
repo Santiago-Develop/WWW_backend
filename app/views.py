@@ -18,6 +18,7 @@ from .validations import custom_validation, validate_email, validate_password
 from rest_framework.decorators import api_view
 from app.models import *
 from app.serializers import *
+from app.models import Office as OfficeModel
 
 import json
 
@@ -177,14 +178,10 @@ def get_user(request, pk):
 @api_view(['GET'])
 def get_office(request, pk):
     try:
-        user = AppUser.objects.get(user_id=request.user.user_id)
-        if user.is_superuser == True:
-            city = City.objects.get(id=pk)
-        else:
-            return Response({"error": True, "message": "Unauthorized user"}, status=status.HTTP_401_UNAUTHORIZED)
+        if request.method == 'GET':
+            userApp = AppUser.objects.get(user_id=pk)                
+            offices = OfficeModel.objects.filter(customer=userApp)
+            serializer = OfficeSerializer(offices, many=True, context={'request': request})
+            return Response(serializer.data, status=status.HTTP_200_OK)
     except:
-        return Response({"error": True, "message": "You must be logged in to view users"}, status=status.HTTP_404_NOT_FOUND)
-    if request.method == 'GET':
-        serializer = CitySerializer(
-            city, many=False, context={'request': request})
-        return Response(serializer.data)
+        return Response({"error": True, "message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
