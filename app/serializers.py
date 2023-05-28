@@ -19,7 +19,7 @@ class DepartmentSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
-            'id_country'
+            'country'
         )
 
 
@@ -29,14 +29,14 @@ class CitySerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
-            'id_department'
+            'department'
         )
 
 
 # class UserSerializer(serializers.ModelSerializer):
-#     id_country = serializers.CharField(source = 'id_country.name')
-#     id_department = serializers.CharField(source = 'id_department.name')
-#     id_city = serializers.CharField(source = 'id_city.name')
+#     country = serializers.CharField(source = 'country.name')
+#     department = serializers.CharField(source = 'department.name')
+#     city = serializers.CharField(source = 'city.name')
 #     class Meta:
 #         model = User
 #         fields = (
@@ -49,9 +49,9 @@ class CitySerializer(serializers.ModelSerializer):
 #             'urlImg',
 #             'email',
 #             'role',
-#             'id_country',
-#             'id_department',
-#             'id_city'
+#             'country',
+#             'department',
+#             'city'
 #         )
 
 #     def create(self, validated_data):
@@ -135,10 +135,11 @@ class UpdateSerializer(serializers.ModelSerializer):
 
 UserModel = get_user_model()
 
+
 class UserRegisterSerializer(serializers.ModelSerializer):
-    id_country = serializers.StringRelatedField()
-    id_department = serializers.StringRelatedField()
-    id_city = serializers.StringRelatedField()
+    country = serializers.StringRelatedField()
+    department = serializers.StringRelatedField()
+    city = serializers.StringRelatedField()
 
     class Meta:
         model = UserModel
@@ -146,38 +147,41 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def create(self, clean_data):
         user_obj = UserModel.objects.create_user(
-                                                    email = clean_data['email'], 
-                                                    password = clean_data['password'],
-                                                    phone =  clean_data['phone'],
-                                                    username = clean_data['username'],
-                                                    documentType = clean_data['documentType'],
-                                                    documentNumber = clean_data['documentNumber'],
-                                                    urlImg = clean_data['urlImg'],
-                                                    role = clean_data['role'],
-                                                    id_country =  clean_data['id_country'],
-                                                    id_department = clean_data['id_department'],
-                                                    id_city = clean_data['id_city'],
-                                                    is_staff = clean_data['is_staff'],
-                                                    is_activate = clean_data['is_activate'],
-                                                    is_superuser = clean_data['is_superuser'],
-                                                    last_login = clean_data['last_login'],
-                                                    date_joined = clean_data['date_joined']
-                                                )  
+            email=clean_data['email'],
+            password=clean_data['password'],
+            phone=clean_data['phone'],
+            username=clean_data['username'],
+            documentType=clean_data['documentType'],
+            documentNumber=clean_data['documentNumber'],
+            urlImg=clean_data['urlImg'],
+            role=clean_data['role'],
+            country=clean_data['country'],
+            department=clean_data['department'],
+            city=clean_data['city'],
+            is_staff=True,
+            is_activate=True,
+            is_superuser=clean_data['is_superuser'],
+        )
         user_obj.save()
         return user_obj
-    
+
 
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
 
     def check_user(self, clean_data):
-        user = authenticate(email = clean_data['email'], password = clean_data['password'])
+        user = authenticate(
+            email=clean_data['email'], password=clean_data['password'])
+        
+        user_info = UserModel.objects.get(email=clean_data['email'])
+        print("user_info: ", user_info)
         if not user:
             raise ValidationError('user not found')
         return user
-    
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ('email', 'username')
+        fields = '__all__'
