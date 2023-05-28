@@ -56,15 +56,15 @@ class User(generics.ListCreateAPIView):
 class Office(generics.ListCreateAPIView):
     queryset = Office.objects.all()
     serializer_class = OfficeSerializer
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     authentication_class = (TokenAuthentication,)
 
-    def get_queryset(self):
-        user = self.request.user
-        qs = super().get_queryset()
-        if not user.is_superuser:
-            qs = qs.filter(id_customer=user.id)
-        return qs
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     qs = super().get_queryset()
+    #     if not user.is_superuser:
+    #         qs = qs.filter(customer_id=user.id)
+    #     return qs
 
 
 class Engagement(generics.ListCreateAPIView):

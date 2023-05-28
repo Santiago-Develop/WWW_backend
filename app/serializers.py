@@ -7,92 +7,47 @@ from django.contrib.auth import get_user_model, authenticate
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Country
-        fields = (
-            'id',
-            'name',
-        )
-
+        fields = '__all__'
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
-        fields = (
-            'id',
-            'name',
-            'country'
-        )
+        fields = '__all__'
 
 
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
         model = City
-        fields = (
-            'id',
-            'name',
-            'department'
-        )
+        fields = '__all__'
 
 
 class OfficeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Office
-        fields = (
-            'id',
-            'name',
-            'address',
-            'phone',
-            'id_customer'
-        )
-
+        fields = '__all__'
 
 class EngagementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Engagement
-        fields = (
-            'id',
-            'id_customer',
-            'id_messager'
-        )
+        fields = '__all__'
 
 
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
-        fields = (
-            'id',
-            'code',
-            'amount',
-            'transport',
-            'date_time',
-            'description',
-            'id_customer',
-            'id_messager',
-            'id_source_office',
-            'id_source_destination'
-        )
+        fields = '__all__'
 
 
 class StateSerializer(serializers.ModelSerializer):
     class Meta:
         model = State
-        fields = (
-            'id',
-            'name'
-        )
+        fields = '__all__'
 
 
 class UpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Update
-        fields = (
-            'id',
-            'new_state',
-            'photo',
-            'description',
-            'current_date_time',
-            'id_service',
-            'id_state'
-        )
+        fields = '__all__'
 
 
 UserModel = get_user_model()
@@ -147,7 +102,7 @@ class UserSerializer(serializers.ModelSerializer):
     country = serializers.StringRelatedField()
     department = serializers.StringRelatedField()
     city = serializers.StringRelatedField()
-    
+
     class Meta:
         model = UserModel
         fields = '__all__'
