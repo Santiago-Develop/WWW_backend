@@ -15,6 +15,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from .validations import custom_validation, validate_email, validate_password
+from rest_framework.decorators import api_view
 from app.models import *
 from app.serializers import *
 
@@ -161,3 +162,20 @@ class UserView(APIView):
     def get(self, request):
         serializer = UserSerializer(request.user)
         return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+
+def get_user(request, pk):
+    try:
+        user = AppUser.objects.get(user_id=request.user.user_id)
+        if user.is_superuser == True:
+            userApp = AppUser.objects.get(user_id=pk)
+        else:
+            return Response({"error": True, "message": "Unauthorized user"}, status=status.HTTP_401_UNAUTHORIZED)
+    except:
+        return Response({"error": True, "message": "You must be logged in to view users"}, status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'GET':
+        serializer = UserSerializer(
+            userApp, many=False, context={'request': request})
+        return Response(serializer.data)
