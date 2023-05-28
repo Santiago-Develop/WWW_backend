@@ -38,7 +38,7 @@ class City(generics.ListCreateAPIView):
     queryset = City.objects.all()
     serializer_class = CitySerializer
     authentication_class = (TokenAuthentication,)
-
+    
 
 class User(generics.ListCreateAPIView):
     queryset = AppUser.objects.all()
@@ -145,7 +145,6 @@ class UserLogin(APIView):
                 "role": user_info.role,
                 "urlImg": user_info.urlImg,
             }
-
             return Response(json.dumps(response),status=status.HTTP_200_OK)
 
 
@@ -165,7 +164,6 @@ class UserView(APIView):
 
 
 @api_view(['GET'])
-
 def get_user(request, pk):
     try:
         user = AppUser.objects.get(user_id=request.user.user_id)
@@ -178,4 +176,19 @@ def get_user(request, pk):
     if request.method == 'GET':
         serializer = UserSerializer(
             userApp, many=False, context={'request': request})
+        return Response(serializer.data)
+    
+@api_view(['GET'])
+def get_city(request, pk):
+    try:
+        user = AppUser.objects.get(user_id=request.user.user_id)
+        if user.is_superuser == True:
+            city = City.objects.get(id=pk)
+        else:
+            return Response({"error": True, "message": "Unauthorized user"}, status=status.HTTP_401_UNAUTHORIZED)
+    except:
+        return Response({"error": True, "message": "You must be logged in to view users"}, status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'GET':
+        serializer = CitySerializer(
+            city, many=False, context={'request': request})
         return Response(serializer.data)
