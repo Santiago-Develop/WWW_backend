@@ -106,7 +106,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     documentNumber = models.CharField(
         max_length=100, blank=False, null=False, unique=True)
     phone = models.CharField(blank=False, null=False, unique=True, max_length=100)
-    urlImg = models.CharField(blank=False, null=False, max_length=10000)
+    urlImg = models.CharField(blank=False, null=False, max_length=100000)
     role = models.CharField(
         choices=Roles.choices,
         max_length=1000
