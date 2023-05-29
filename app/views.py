@@ -178,7 +178,7 @@ def get_user(request, pk):
         return Response({"error": True, "message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['GET', 'DELETE'])
+@api_view(['GET', 'POST', 'DELETE'])
 def get_office(request, pk):
     try:
         if request.method == 'GET':
@@ -186,12 +186,30 @@ def get_office(request, pk):
             serializer = OfficeSerializer(
                 office, many=False, context={'request': request})
             return Response(serializer.data, status=status.HTTP_200_OK)
+        elif request.method == 'POST':
+            office = OfficeModel.objects.get(id=pk)
+            body = json.loads(request.body.decode('utf-8'))
+            name = body.get('name')
+            address = body.get('address')
+            phone = body.get('phone')
+
+            if name:
+                office.name = name
+            if address:
+                office.address = address
+            if phone:
+                office.phone = phone
+
+            office.save()
+            
+            return Response({"message": "Office updated"}, status=status.HTTP_200_OK)
         elif request.method == 'DELETE':
             office = OfficeModel.objects.get(id=pk)
             name = office.name
             office.delete()
             return Response({"message": "Office deleted", "name": name}, status=status.HTTP_200_OK)
-    except:
+    except Exception as err:
+        print(err)
         return Response({"error": True, "message": "Office does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
 
