@@ -182,10 +182,9 @@ def get_user(request, pk):
 def get_office(request, pk):
     try:
         if request.method == 'GET':
-            userApp = AppUser.objects.get(user_id=pk)
-            offices = OfficeModel.objects.filter(customer=userApp)
+            office = OfficeModel.objects.get(id=pk)
             serializer = OfficeSerializer(
-                offices, many=True, context={'request': request})
+                office, many=False, context={'request': request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         elif request.method == 'DELETE':
             office = OfficeModel.objects.get(id=pk)
