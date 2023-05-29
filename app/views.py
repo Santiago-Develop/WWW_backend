@@ -39,7 +39,7 @@ class City(generics.ListCreateAPIView):
     queryset = City.objects.all()
     serializer_class = CitySerializer
     authentication_class = (TokenAuthentication,)
-    
+
 
 class User(generics.ListCreateAPIView):
     queryset = AppUser.objects.all()
@@ -146,7 +146,7 @@ class UserLogin(APIView):
                 "role": user_info.role,
                 "urlImg": user_info.urlImg,
             }
-            return Response(json.dumps(response),status=status.HTTP_200_OK)
+            return Response(json.dumps(response), status=status.HTTP_200_OK)
 
 
 class UserLogout(APIView):
@@ -169,19 +169,41 @@ def get_user(request, pk):
     try:
         if request.method == 'GET':
             userApp = AppUser.objects.get(user_id=pk)
-            serializer = UserSerializer(
+            user_serializer = UserSerializer(
                 userApp, many=False, context={'request': request})
-            return Response(serializer.data)
+
+            return Response(user_serializer.data)
+
     except:
         return Response({"error": True, "message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
-    
-@api_view(['GET'])
+
+
+@api_view(['GET', 'DELETE'])
 def get_office(request, pk):
     try:
         if request.method == 'GET':
-            userApp = AppUser.objects.get(user_id=pk)                
+            userApp = AppUser.objects.get(user_id=pk)
             offices = OfficeModel.objects.filter(customer=userApp)
-            serializer = OfficeSerializer(offices, many=True, context={'request': request})
+            serializer = OfficeSerializer(
+                offices, many=True, context={'request': request})
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        elif request.method == 'DELETE':
+            office = OfficeModel.objects.get(id=pk)
+            name = office.name
+            office.delete()
+            return Response({"message": "Office deleted", "name": name}, status=status.HTTP_200_OK)
+    except:
+        return Response({"error": True, "message": "Office does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_user_offices(request, pk):
+    try:
+        if request.method == 'GET':
+            userApp = AppUser.objects.get(user_id=pk)
+            offices = OfficeModel.objects.filter(customer=userApp)
+            serializer = OfficeSerializer(
+                offices, many=True, context={'request': request})
             return Response(serializer.data, status=status.HTTP_200_OK)
     except:
         return Response({"error": True, "message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)

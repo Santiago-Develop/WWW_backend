@@ -25,5 +25,6 @@ urlpatterns = [
     path('', include('app.urls')),
     path('logout/', UserLogout.as_view(), name = 'logout'),
     path('api/user/<int:pk>/', get_user, name="get_user"),
-    path('api/office/<int:pk>/', get_office, name="get_user")
+    path('api/office/<int:pk>/', get_office, name="get_user"),
+    path('api/user_offices/<int:pk>/', get_user_offices, name="user_offices")
 ]
