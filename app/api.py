@@ -18,10 +18,10 @@ class CityViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     serializer_class = CitySerializer
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    permission_classes = [permissions.AllowAny]
-    serializer_class = UserSerializer
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     permission_classes = [permissions.AllowAny]
+#     serializer_class = UserSerializer
 
 class OfficeViewSet(viewsets.ModelViewSet):
     queryset = Office.objects.all()
