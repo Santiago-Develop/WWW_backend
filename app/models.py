@@ -148,8 +148,8 @@ class Office(models.Model):
 
 class Engagement(models.Model):
     id = models.AutoField(primary_key=True)
-    customer = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name="customer_engagement")
-    messenger = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name="messenger_engagement")
+    customer = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name="customer_engagement", null=True)
+    messenger = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name="messenger_engagement", null=True)
 
     class Meta:
         verbose_name = "Engagement"

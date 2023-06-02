@@ -18,7 +18,7 @@ from .validations import custom_validation, validate_email, validate_password
 from rest_framework.decorators import api_view
 from app.models import *
 from app.serializers import *
-from app.models import Office as OfficeModel
+from app.models import Office as OfficeModel, Engagement as EngagementModel
 
 import json
 
@@ -230,8 +230,34 @@ def get_user_offices(request, pk):
 def get_user_messengers(request, pk):
     try:
         if request.method == 'POST':
-            userApp = AppUser.objects.get(user_id=pk)
-            print("userApp: ", userApp)
+            messenger = AppUser.objects.get(user_id=pk)
+            body = json.loads(request.body.decode('utf-8'))
+            customers_id = body.get('customers')
+
+            print("messenger: ", messenger)
+            print("customers_id: ", customers_id)
+
+            engagements = EngagementModel.objects.filter(messenger=messenger)
+            print("engagements: ", engagements)
+
+            # Delete all his engagements 
+            if len(engagements) > 0: 
+                print("exists engagements")
+                for engagement in engagements:
+                    engagement.delete()
+                
+            # Create engagements
+            for id in customers_id:
+                customer = AppUser.objects.get(user_id=id)
+                print("id: ", id)
+                print("customer: ", customer)
+                print("messenger: ", messenger)
+                EngagementModel.objects.create(
+                    customer=customer,
+                    messenger=messenger
+                )
+                
+
             # offices = OfficeModel.objects.filter(customer=userApp)
             # serializer = OfficeSerializer(
             #     offices, many=True, context={'request': request})
