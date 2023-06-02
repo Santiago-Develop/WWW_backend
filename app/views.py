@@ -226,14 +226,16 @@ def get_user_offices(request, pk):
         return Response({"error": True, "message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
 
+@api_view(['GET','POST'])
 def get_user_messengers(request, pk):
     try:
-        if request.method == 'GET':
+        if request.method == 'POST':
             userApp = AppUser.objects.get(user_id=pk)
-            offices = OfficeModel.objects.filter(customer=userApp)
-            serializer = OfficeSerializer(
-                offices, many=True, context={'request': request})
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            print("userApp: ", userApp)
+            # offices = OfficeModel.objects.filter(customer=userApp)
+            # serializer = OfficeSerializer(
+            #     offices, many=True, context={'request': request})
+            return Response({}, status=status.HTTP_200_OK)
     except:
         return Response({"error": True, "message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
 

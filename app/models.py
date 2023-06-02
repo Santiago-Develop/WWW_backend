@@ -96,7 +96,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     class Roles(models.TextChoices):
         ADMIN = "ADMIN", _("Administrator")
         CUSTOMER = "CUSTOMER", _("Customer")
-        MESSAGER = "MESSENGER", _("Messenger")
+        MESSENGER = "MESSENGER", _("Messenger")
 
     documentType = models.CharField(
         choices=DocumentTypes.choices,
@@ -148,8 +148,8 @@ class Office(models.Model):
 
 class Engagement(models.Model):
     id = models.AutoField(primary_key=True)
-    # id_customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="id_customer_engagement")
-    # id_messager = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name="customer_engagement")
+    messenger = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name="messenger_engagement")
 
     class Meta:
         verbose_name = "Engagement"
