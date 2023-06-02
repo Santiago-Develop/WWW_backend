@@ -201,7 +201,7 @@ def get_office(request, pk):
                 office.phone = phone
 
             office.save()
-            
+
             return Response({"message": "Office updated"}, status=status.HTTP_200_OK)
         elif request.method == 'DELETE':
             office = OfficeModel.objects.get(id=pk)
@@ -226,42 +226,47 @@ def get_user_offices(request, pk):
         return Response({"error": True, "message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['GET','POST'])
+@api_view(['GET', 'POST'])
 def get_user_messengers(request, pk):
     try:
-        if request.method == 'POST':
+        if request.method == 'GET':
+            messenger = AppUser.objects.get(user_id=pk)
+            engagements = EngagementModel.objects.filter(messenger=messenger)
+
+            data = []
+
+            for engagement in engagements:
+                userApp = AppUser.objects.get(user_id=engagement.customer_id)
+
+                response = {
+                    "user_id": userApp.user_id,
+                    "username": userApp.username,
+                }
+
+                data.append(response)
+
+            return Response({"error": False, "message": "Engagements sent", "data": data}, status=status.HTTP_200_OK)
+
+        elif request.method == 'POST':
             messenger = AppUser.objects.get(user_id=pk)
             body = json.loads(request.body.decode('utf-8'))
             customers_id = body.get('customers')
 
-            print("messenger: ", messenger)
-            print("customers_id: ", customers_id)
-
             engagements = EngagementModel.objects.filter(messenger=messenger)
-            print("engagements: ", engagements)
 
-            # Delete all his engagements 
-            if len(engagements) > 0: 
-                print("exists engagements")
+            # Delete all his engagements
+            if len(engagements) > 0:
                 for engagement in engagements:
                     engagement.delete()
-                
+
             # Create engagements
             for id in customers_id:
                 customer = AppUser.objects.get(user_id=id)
-                print("id: ", id)
-                print("customer: ", customer)
-                print("messenger: ", messenger)
                 EngagementModel.objects.create(
                     customer=customer,
                     messenger=messenger
                 )
-                
 
-            # offices = OfficeModel.objects.filter(customer=userApp)
-            # serializer = OfficeSerializer(
-            #     offices, many=True, context={'request': request})
-            return Response({}, status=status.HTTP_200_OK)
+            return Response({"error": False, "message": "Engagements updated"}, status=status.HTTP_200_OK)
     except:
         return Response({"error": True, "message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
-
