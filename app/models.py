@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 # Create your models here.
 
+
 class Country(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, blank=False,
@@ -48,6 +49,7 @@ class City(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class AppUserManager(BaseUserManager):
     def create_user(self, email, password=None, phone=None, username=None, documentType=None, documentNumber=None, urlImg=None, role=None, country=None, department=None, city=None, is_staff=None, is_activate=None, is_superuser=None, last_login=None, date_joined=None):
@@ -105,7 +107,8 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     )
     documentNumber = models.CharField(
         max_length=100, blank=False, null=False, unique=True)
-    phone = models.CharField(blank=False, null=False, unique=True, max_length=100)
+    phone = models.CharField(blank=False, null=False,
+                             unique=True, max_length=100)
     urlImg = models.CharField(blank=False, null=False, max_length=100000)
     role = models.CharField(
         choices=Roles.choices,
@@ -134,7 +137,8 @@ class Office(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, blank=False, null=False)
     address = models.CharField(max_length=100, blank=False, null=False)
-    phone = models.CharField(blank=False, null=False, unique=False, max_length=100)
+    phone = models.CharField(blank=False, null=False,
+                             unique=False, max_length=100)
     customer = models.ForeignKey(AppUser, on_delete=models.CASCADE,
                                  related_name="id_customer_office", blank=True, null=True)
 
@@ -146,10 +150,13 @@ class Office(models.Model):
     def __str__(self):
         return self.name
 
+
 class Engagement(models.Model):
     id = models.AutoField(primary_key=True)
-    customer = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name="customer_engagement", null=True)
-    messenger = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name="messenger_engagement", null=True)
+    customer = models.ForeignKey(
+        AppUser, on_delete=models.CASCADE, related_name="customer_engagement", null=True)
+    messenger = models.ForeignKey(
+        AppUser, on_delete=models.CASCADE, related_name="messenger_engagement", null=True)
 
     class Meta:
         verbose_name = "Engagement"
@@ -165,21 +172,23 @@ class Service(models.Model):
         TRUCK = "TRUCK", _("truck")
 
     id = models.AutoField(primary_key=True)
-    # code = models.CharField(max_length=100, blank=False, null=False)
-    amount = models.IntegerField(blank=False, null=False)
+    code = models.CharField(max_length=100, blank=True, null=True, unique=True)
+    amount = models.IntegerField(blank=True, null=True)
     transport = models.CharField(
         choices=Transports.choices,
         default=Transports.MOTORCYCLE,
         max_length=1000
     )
     date_time = models.DateTimeField(auto_now_add=True, auto_now=False)
-    description = models.CharField(max_length=100, blank=False, null=False)
-    # id_customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="id_customer_service")
-    # id_messager = models.ForeignKey(User, on_delete=models.CASCADE)
-    id_source_office = models.ForeignKey(
-        Office, on_delete=models.CASCADE, related_name="id_source_office")
-    id_source_destination = models.ForeignKey(
-        Office, on_delete=models.CASCADE, related_name="id_source_destination")
+    description = models.CharField(max_length=100, blank=True, null=True)
+    customer = models.ForeignKey(
+        AppUser, on_delete=models.CASCADE, related_name="customer_service", null=True)
+    messenger = models.ForeignKey(
+        AppUser, on_delete=models.CASCADE, related_name="messenger_service", null=True)
+    source_office = models.ForeignKey(
+        Office, on_delete=models.CASCADE, related_name="source_office", null=True)
+    source_destination = models.ForeignKey(
+        Office, on_delete=models.CASCADE, related_name="source_destination", null=True)
 
     class Meta:
         verbose_name = "Service"
@@ -205,12 +214,12 @@ class State(models.Model):
 
 class Update(models.Model):
     id = models.AutoField(primary_key=True)
-    new_state = models.CharField(max_length=100, blank=False, null=False)
-    photo = models.CharField(max_length=100, blank=False, null=False)
-    description = models.CharField(max_length=100, blank=False, null=False)
+    new_state = models.CharField(max_length=100, blank=True, null=True)
+    photo = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=100, blank=True, null=True)
     current_date_time = models.DateTimeField(auto_now_add=True, auto_now=False)
-    id_service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    id_state = models.ForeignKey(State, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True)
+    state = models.ForeignKey(State, on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = "State"

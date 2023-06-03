@@ -18,7 +18,7 @@ from .validations import custom_validation, validate_email, validate_password
 from rest_framework.decorators import api_view
 from app.models import *
 from app.serializers import *
-from app.models import Office as OfficeModel, Engagement as EngagementModel
+from app.models import Office as OfficeModel, Engagement as EngagementModel, Service as ServiceModel, State as StateModel, Update as UpdateModel
 
 import json
 
@@ -47,26 +47,12 @@ class User(generics.ListCreateAPIView):
     # permission_classes = (IsAuthenticated,)
     authentication_class = (TokenAuthentication,)
 
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     qs = super().get_queryset()
-    #     if not user.is_superuser:
-    #         qs = qs.filter(email=user.email)
-    #     return qs
-
 
 class Office(generics.ListCreateAPIView):
     queryset = Office.objects.all()
     serializer_class = OfficeSerializer
     # permission_classes = (IsAuthenticated,)
     authentication_class = (TokenAuthentication,)
-
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     qs = super().get_queryset()
-    #     if not user.is_superuser:
-    #         qs = qs.filter(customer_id=user.id)
-    #     return qs
 
 
 class Engagement(generics.ListCreateAPIView):
@@ -84,10 +70,26 @@ class Engagement(generics.ListCreateAPIView):
 
 
 class Service(generics.ListCreateAPIView):
-    queryset = Service.objects.all()
+    queryset = ServiceModel.objects.all()
     serializer_class = ServiceSerializer
-    permission_classes = (IsAuthenticated,)
     authentication_class = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
+
+    def perform_create(self, serializer):
+        service = serializer.save()
+        required = StateModel.objects.get(id=1)
+        UpdateModel.objects.create(service=service, state=required)
+
+    # def perform_update(self, serializer):
+    #     service = serializer.save()
+        # Update.objects.create(service=service, state="Updated")
+
+
+class ServiceEditDelete(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ServiceModel.objects.all()
+    serializer_class = ServiceSerializer
+    # permission_classes = (IsAuthenticated,)
+    # authentication_class = (TokenAuthentication,)
 
 
 class State(generics.ListCreateAPIView):
@@ -98,9 +100,16 @@ class State(generics.ListCreateAPIView):
 
 
 class Update(generics.ListCreateAPIView):
-    queryset = Update.objects.all()
+    queryset = UpdateModel.objects.all()
     serializer_class = UpdateSerializer
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
+    authentication_class = (TokenAuthentication,)
+
+
+class UpdateEditDelete(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UpdateModel.objects.all()
+    serializer_class = UpdateSerializer
+    # permission_classes = (IsAuthenticated,)
     authentication_class = (TokenAuthentication,)
 
 
@@ -270,3 +279,37 @@ def get_user_messengers(request, pk):
             return Response({"error": False, "message": "Engagements updated"}, status=status.HTTP_200_OK)
     except:
         return Response({"error": True, "message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET', 'POST'])
+def get_hired_messengers(request, pk):
+    if request.method == 'GET':
+        customer = AppUser.objects.get(user_id=pk)
+        engagements = EngagementModel.objects.filter(customer=customer)
+
+        messengers = []
+
+        for engagement in engagements:
+            userApp = AppUser.objects.get(user_id=engagement.messenger_id)
+            messengers.append(userApp)
+
+        serializer = UserSerializer(
+            messengers, many=True, context={'request': request})
+        return Response({"error": False, "message": "Messengers sent", "data": serializer.data}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET', 'POST'])
+def get_bosses(request, pk):
+    if request.method == 'GET':
+        messenger = AppUser.objects.get(user_id=pk)
+        engagements = EngagementModel.objects.filter(messenger=messenger)
+
+        customers = []
+
+        for engagement in engagements:
+            userApp = AppUser.objects.get(user_id=engagement.customer_id)
+            customers.append(userApp)
+
+        serializer = UserSerializer(
+            customers, many=True, context={'request': request})
+        return Response({"error": False, "message": "Customers sent", "data": serializer.data}, status=status.HTTP_200_OK)
