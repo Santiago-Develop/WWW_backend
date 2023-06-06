@@ -77,6 +77,8 @@ class Service(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         service = serializer.save()
+        service.code = "SRV-"+str(service.id)
+        service.save()
         required = StateModel.objects.get(id=1)
         UpdateModel.objects.create(service=service, state=required)
 
