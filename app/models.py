@@ -187,8 +187,8 @@ class Service(models.Model):
         AppUser, on_delete=models.CASCADE, related_name="messenger_service", null=True)
     source_office = models.ForeignKey(
         Office, on_delete=models.CASCADE, related_name="source_office", null=True)
-    source_destination = models.ForeignKey(
-        Office, on_delete=models.CASCADE, related_name="source_destination", null=True)
+    destination_office = models.ForeignKey(
+        Office, on_delete=models.CASCADE, related_name="destination_office", null=True)
 
     class Meta:
         verbose_name = "Service"
