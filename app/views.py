@@ -212,8 +212,9 @@ def get_office(request, pk):
                 office.phone = phone
 
             office.save()
-
-            return Response({"message": "Office updated"}, status=status.HTTP_200_OK)
+            serializer = OfficeSerializer(
+                office, many=False, context={'request': request})
+            return Response({"message": "Office updated", "data": serializer.data}, status=status.HTTP_200_OK)
         elif request.method == 'DELETE':
             office = OfficeModel.objects.get(id=pk)
             name = office.name

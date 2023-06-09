@@ -193,7 +193,7 @@ class Service(models.Model):
     class Meta:
         verbose_name = "Service"
         verbose_name_plural = "Services"
-        ordering = ["id"]
+        ordering = ["-date_time"]
 
     def __str__(self):
         return self.code
