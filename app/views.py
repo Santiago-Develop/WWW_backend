@@ -75,6 +75,12 @@ class Service(generics.ListCreateAPIView):
     authentication_class = (TokenAuthentication,)
     # permission_classes = (IsAuthenticated,)
 
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return ServiceSerializer
+        elif self.request.method == 'POST':
+            return ServiceWriteSerializer
+
     def perform_create(self, serializer):
         service = serializer.save()
         service.code = "SRV-"+str(service.id)
@@ -92,6 +98,7 @@ class ServiceEditDelete(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ServiceSerializer
     # permission_classes = (IsAuthenticated,)
     # authentication_class = (TokenAuthentication,)
+
 
 
 class State(generics.ListCreateAPIView):

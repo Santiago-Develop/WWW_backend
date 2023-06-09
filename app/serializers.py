@@ -35,7 +35,12 @@ class EngagementSerializer(serializers.ModelSerializer):
 class ServiceSerializer(serializers.ModelSerializer):
     source_office = serializers.StringRelatedField()
     destination_office = serializers.StringRelatedField()
-    
+
+    class Meta:
+        model = Service
+        fields = '__all__'
+
+class ServiceWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = '__all__'
