@@ -35,10 +35,17 @@ class EngagementSerializer(serializers.ModelSerializer):
 class ServiceSerializer(serializers.ModelSerializer):
     source_office = serializers.StringRelatedField()
     destination_office = serializers.StringRelatedField()
-
+    updates = serializers.SerializerMethodField()
+    
+    def get_updates(self, obj):
+        updates = Update.objects.filter(service=obj)
+        serializer = UpdateSerializer(updates, many=True)
+        return serializer.data
+    
     class Meta:
         model = Service
-        fields = '__all__'
+        fields = ('id', 'code', 'amount', 'transport', 'date_time', 'description', 'customer', 'messenger',
+                  'source_office', 'destination_office', 'updates')
 
 class ServiceWriteSerializer(serializers.ModelSerializer):
     class Meta:
