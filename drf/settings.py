@@ -19,15 +19,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
+
+
+from decouple import Config, Csv
+from decouple import config as decouple_config
+
+# Configuración de variables de entorno
+config = Config('.env')
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rgeh1$@az@9(ped34h$w&u36il%#ly3-#4zr7!^j!ku8yx0%yw'
+SECRET_KEY = decouple_config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = decouple_config('DEBUG', default=False, cast=bool)
 
-CORS_ALLOWED_ORIGINS  = ['http://localhost:5173', 'http://localhost:5174']
+CORS_ALLOWED_ORIGINS  = ['http://localhost:5173', 'http://localhost:5174', 'https://wwwbackend-production.up.railway.app']
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173', 'http://localhost:5174']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173', 'http://localhost:5174', 'https://wwwbackend-production.up.railway.app']
 
 CSRF_COOKIE_SECURE = True
 # Application definition
@@ -92,13 +100,13 @@ DATABASES = {
     #     'DATABASE_PORT': '5432',
     # },
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'jIyXjteImhtuXKvuRMyI',
-        'HOST': 'containers-us-west-100.railway.app',
-        'PORT': '5605',
-    }
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': decouple_config('DATABASE_NAME'),
+       'USER': decouple_config('DATABASE_USER'),
+       'PASSWORD': decouple_config('DATABASE_PASSWORD'),
+       'HOST': decouple_config('DATABASE_HOST'),
+       'PORT': decouple_config('DATABASE_PORT', default=''),
+   }
 }
 
 
