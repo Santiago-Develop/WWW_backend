@@ -35,6 +35,8 @@ class EngagementSerializer(serializers.ModelSerializer):
 class ServiceSerializer(serializers.ModelSerializer):
     source_office = serializers.StringRelatedField()
     destination_office = serializers.StringRelatedField()
+    # customer = serializers.StringRelatedField()
+    messenger = serializers.StringRelatedField()
     updates = serializers.SerializerMethodField()
     
     def get_updates(self, obj):
