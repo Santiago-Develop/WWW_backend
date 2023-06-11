@@ -84,16 +84,20 @@ WSGI_APPLICATION = 'drf.wsgi.application'
 
 DATABASES = {
     # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'www_db3',
+    #     'USER': 'postgres',
+    #     'PASSWORD': 'santiago123',
+    #     'HOST': 'localhost',
+    #     'DATABASE_PORT': '5432',
+    # },
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'www_db3',
+        'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': 'santiago123',
-        'HOST': 'localhost',
-        'DATABASE_PORT': '5432',
+        'PASSWORD': 'jIyXjteImhtuXKvuRMyI',
+        'HOST': 'containers-us-west-100.railway.app',
+        'DATABASE_PORT': '5605',
     }
 }
 
