@@ -15,9 +15,27 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path, include
+from rest_framework.authtoken import views
+from app.views import *
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('app.urls'))
+    path('', include('app.urls')),
+    path('logout/', UserLogout.as_view(), name='logout'),
+    path('api/user/<int:pk>/', get_user, name="get_user"),
+    path('api/office/<int:pk>/', get_office, name="get_user"),
+    path('api/user_offices/<int:pk>/', get_user_offices, name="user_offices"),
+    path('api/user_messengers/<int:pk>/',
+         get_user_messengers, name="get_user_messengers"),
+    path('api/hired_messengers/<int:pk>/',
+         get_hired_messengers, name="get_hired_messengers"),
+    path('api/get_bosses/<int:pk>/', get_bosses, name="get_bosses"),
+    path('api/services/', Service.as_view(), name='service_list_create'),
+    path('api/services/<int:pk>/', ServiceEditDelete.as_view(),
+         name='service_edit_destroy'),
+    path('api/updates/', Update.as_view(), name='update-list-create'),
+    path('api/updates/<int:pk>/', UpdateEditDelete.as_view(),
+         name='update_edit_destroy'),
 ]
