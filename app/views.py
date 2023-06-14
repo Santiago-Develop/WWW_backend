@@ -113,8 +113,7 @@ class Update(generics.ListCreateAPIView):
     serializer_class = UpdateSerializer
     # permission_classes = (IsAuthenticated,)
     authentication_class = (TokenAuthentication,)
-
-
+    
 class UpdateEditDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = UpdateModel.objects.all()
     serializer_class = UpdateSerializer

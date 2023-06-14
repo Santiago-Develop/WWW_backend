@@ -69,10 +69,22 @@ class StateSerializer(serializers.ModelSerializer):
 
 
 class UpdateSerializer(serializers.ModelSerializer):
+    messenger = serializers.CharField(required=False)
+
     class Meta:
         model = Update
         fields = '__all__'
 
+    def create(self, validated_data):
+        messenger_id = validated_data.pop('messenger', None)
+        instance = super().create(validated_data)
+        if messenger_id:
+            messenger = AppUser.objects.get(user_id=messenger_id)
+            service = validated_data.pop('service', None)
+            service.messenger = messenger
+            service.save()
+        
+        return instance
 
 UserModel = get_user_model()
 
