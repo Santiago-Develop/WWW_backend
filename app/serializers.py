@@ -35,7 +35,7 @@ class EngagementSerializer(serializers.ModelSerializer):
 class ServiceSerializer(serializers.ModelSerializer):
     source_office = serializers.StringRelatedField()
     destination_office = serializers.StringRelatedField()
-    # customer = serializers.StringRelatedField()
+    customer = serializers.SerializerMethodField()
     messenger = serializers.StringRelatedField()
     updates = serializers.SerializerMethodField()
     
@@ -43,6 +43,13 @@ class ServiceSerializer(serializers.ModelSerializer):
         updates = Update.objects.filter(service=obj)
         serializer = UpdateSerializer(updates, many=True)
         return serializer.data
+
+    def get_customer(self, obj):
+        customer = obj.customer
+        return {
+            'id': customer.user_id,
+            'name': customer.username  # Reemplaza 'name' con el nombre del campo que contiene el nombre del cliente en tu modelo de Customer
+        }
     
     class Meta:
         model = Service

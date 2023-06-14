@@ -214,7 +214,6 @@ class State(models.Model):
 
 class Update(models.Model):
     id = models.AutoField(primary_key=True)
-    new_state = models.CharField(max_length=100, blank=True, null=True)
     photo = models.CharField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=100, blank=True, null=True)
     current_date_time = models.DateTimeField(auto_now_add=True, auto_now=False)
