@@ -36,7 +36,7 @@ class ServiceSerializer(serializers.ModelSerializer):
     source_office = serializers.StringRelatedField()
     destination_office = serializers.StringRelatedField()
     customer = serializers.SerializerMethodField()
-    messenger = serializers.StringRelatedField()
+    messenger = serializers.SerializerMethodField()
     updates = serializers.SerializerMethodField()
     
     def get_updates(self, obj):
@@ -48,7 +48,15 @@ class ServiceSerializer(serializers.ModelSerializer):
         customer = obj.customer
         return {
             'id': customer.user_id,
-            'name': customer.username  # Reemplaza 'name' con el nombre del campo que contiene el nombre del cliente en tu modelo de Customer
+            'name': customer.username 
+        }
+    
+    def get_messenger(self, obj):
+        messenger = obj.messenger
+        return {
+            'id': messenger.user_id if messenger else None,
+            'name': messenger.username if messenger else None,
+            'role': messenger.role if messenger else None,
         }
     
     class Meta:
