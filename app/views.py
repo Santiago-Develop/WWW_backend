@@ -88,17 +88,12 @@ class Service(generics.ListCreateAPIView):
         required = StateModel.objects.get(id=1)
         UpdateModel.objects.create(service=service, state=required)
 
-    # def perform_update(self, serializer):
-    #     service = serializer.save()
-        # Update.objects.create(service=service, state="Updated")
-
 
 class ServiceEditDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = ServiceModel.objects.all()
     serializer_class = ServiceSerializer
     # permission_classes = (IsAuthenticated,)
     # authentication_class = (TokenAuthentication,)
-
 
 
 class State(generics.ListCreateAPIView):
@@ -113,7 +108,8 @@ class Update(generics.ListCreateAPIView):
     serializer_class = UpdateSerializer
     # permission_classes = (IsAuthenticated,)
     authentication_class = (TokenAuthentication,)
-    
+
+
 class UpdateEditDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = UpdateModel.objects.all()
     serializer_class = UpdateSerializer
@@ -322,3 +318,32 @@ def get_bosses(request, pk):
         serializer = UserSerializer(
             customers, many=True, context={'request': request})
         return Response({"error": False, "message": "Customers sent", "data": serializer.data}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def get_reports(request):
+    import datetime
+
+    if request.method == 'POST':
+        body = json.loads(request.body.decode('utf-8'))
+        role = body.get('role')
+        user_id = body.get('user')
+        months = body.get('months')
+        start_str = months[0]
+        end_str = months[1]
+
+        start = datetime.datetime.strptime(start_str, "%Y-%m")
+        end = datetime.datetime.strptime(end_str, "%Y-%m")
+
+        user = AppUser.objects.get(user_id=user_id)
+        services = []
+
+        if role == "CUSTOMER":
+            services = ServiceModel.objects.filter(customer=user, date_time__gte=start, date_time__lte=end)
+        elif role == "MESSENGER":
+            services = ServiceModel.objects.filter(messenger=user, date_time__gte=start, date_time__lte=end)
+
+        serializer = ServiceSerializer(
+            services, many=True, context={'request': request})
+
+        return Response({"error": False, "message": "Messengers sent", "data": serializer.data}, status=status.HTTP_200_OK)
