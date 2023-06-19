@@ -337,13 +337,27 @@ def get_reports(request):
 
         user = AppUser.objects.get(user_id=user_id)
         services = []
+        data = []
 
         if role == "CUSTOMER":
             services = ServiceModel.objects.filter(customer=user, date_time__gte=start, date_time__lte=end)
         elif role == "MESSENGER":
             services = ServiceModel.objects.filter(messenger=user, date_time__gte=start, date_time__lte=end)
 
-        serializer = ServiceSerializer(
-            services, many=True, context={'request': request})
+        for service in services:
 
-        return Response({"error": False, "message": "Messengers sent", "data": serializer.data}, status=status.HTTP_200_OK)
+            updates = UpdateModel.objects.filter(service=service) or []
+            serializer = UpdateSerializer(
+            updates, many=True, context={'request': request})
+
+            item = {}
+            item['code'] = service.code
+            item['amount'] = service.amount
+            item['transport'] = service.transport
+            item['journey'] = str(service.source_office) + " hacia " + str(service.destination_office)
+            item['customer'] = service.customer.username
+            item['messenger'] = service.messenger.username if service.messenger else "Sin información"
+            item['status'] = serializer.data[len(serializer.data)-1]['state']
+            data.append(item)
+
+        return Response({"error": False, "message": "Messengers sent", "data": data}, status=status.HTTP_200_OK)
