@@ -109,7 +109,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
         max_length=100, blank=False, null=False, unique=True)
     phone = models.CharField(blank=False, null=False,
                              unique=True, max_length=100)
-    urlImg = models.CharField(blank=False, null=False, max_length=None)
+    urlImg = models.CharField(blank=False, null=False, max_length=2147483647)
     role = models.CharField(
         choices=Roles.choices,
         max_length=1000
@@ -214,7 +214,7 @@ class State(models.Model):
 
 class Update(models.Model):
     id = models.AutoField(primary_key=True)
-    photo = models.CharField(max_length=None, blank=True, null=True)
+    photo = models.CharField(max_length=2147483647, blank=True, null=True)
     description = models.CharField(max_length=100, blank=True, null=True)
     current_date_time = models.DateTimeField(auto_now_add=True, auto_now=False)
     service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True)
