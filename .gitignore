@@ -2,3 +2,7 @@ app/__pycache__/
 drf/__pycache__/
 app/migrations/
 .env
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
