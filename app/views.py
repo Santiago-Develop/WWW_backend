@@ -360,4 +360,4 @@ def get_reports(request):
             item['status'] = serializer.data[len(serializer.data)-1]['state']
             data.append(item)
 
-        return Response({"error": False, "message": "Messengers sent", "data": data}, status=status.HTTP_200_OK)
+        return Response({"error": False, "message": "Reports sent", "data": data}, status=status.HTTP_200_OK)
