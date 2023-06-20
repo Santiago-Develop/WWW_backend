@@ -36,7 +36,7 @@ DEBUG = decouple_config('DEBUG', default=False, cast=bool)
 CORS_ALLOWED_ORIGINS  = ['https://www-backend.vercel.app']
 
 CSRF_TRUSTED_ORIGINS = ['https://www-backend.vercel.app/']
-ALLOWED_HOSTS = ['https://www-backend.vercel.app/']
+ALLOWED_HOSTS = ['https://www-backend.vercel.app/', '127.0.0.1']
 CSRF_COOKIE_SECURE = True
 # Application definition
 
