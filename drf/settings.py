@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from decouple import config as decouple_config
+from decouple import Config, Csv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,10 +22,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 
-
-from decouple import Config, Csv
-from decouple import config as decouple_config
-
 # Configuración de variables de entorno
 config = Config('.env')
 
@@ -33,11 +31,12 @@ SECRET_KEY = decouple_config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = decouple_config('DEBUG', default=False, cast=bool)
 
-CORS_ALLOWED_ORIGINS  = ['https://www-frontend-sepia.vercel.app']
+CORS_ALLOWED_ORIGINS = ['https://www-frontend-sepia.vercel.app', '127.0.0.1', 'wwwbackend-production.up.railway.app']
 
-CSRF_TRUSTED_ORIGINS = ['https://www-frontend-sepia.vercel.app']
+CSRF_TRUSTED_ORIGINS = ['https://www-frontend-sepia.vercel.app', '127.0.0.1', 'wwwbackend-production.up.railway.app']
 
-ALLOWED_HOSTS = ['127.0.0.1', 'wwwbackend-production.up.railway.app', 'www-frontend-sepia.vercel.app']
+ALLOWED_HOSTS = ['127.0.0.1', 'wwwbackend-production.up.railway.app',
+                 'www-frontend-sepia.vercel.app']
 
 CSRF_COOKIE_SECURE = True
 # Application definition
@@ -102,13 +101,13 @@ DATABASES = {
     #     'DATABASE_PORT': '5432',
     # },
     'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': decouple_config('DATABASE_NAME'),
-       'USER': decouple_config('DATABASE_USER'),
-       'PASSWORD': decouple_config('DATABASE_PASSWORD'),
-       'HOST': decouple_config('DATABASE_HOST'),
-       'PORT': decouple_config('DATABASE_PORT', default=''),
-   }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': decouple_config('DATABASE_NAME'),
+        'USER': decouple_config('DATABASE_USER'),
+        'PASSWORD': decouple_config('DATABASE_PASSWORD'),
+        'HOST': decouple_config('DATABASE_HOST'),
+        'PORT': decouple_config('DATABASE_PORT', default=''),
+    }
 }
 
 
