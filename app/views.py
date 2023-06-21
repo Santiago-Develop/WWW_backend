@@ -361,3 +361,7 @@ def get_reports(request):
             data.append(item)
 
         return Response({"error": False, "message": "Reports sent", "data": data}, status=status.HTTP_200_OK)
+    
+@api_view(['GET'])
+def get_staff(request):
+    return Response({"error": False, "message": "Page sent",}, status=status.HTTP_200_OK)
