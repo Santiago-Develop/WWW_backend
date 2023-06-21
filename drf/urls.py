@@ -39,6 +39,5 @@ urlpatterns = [
     path('api/updates/<int:pk>/', UpdateEditDelete.as_view(),
          name='update_edit_destroy'),
     path('api/reports/', get_reports, name='reports'),
-    path('staff', get_staff, name='reports'),
 
 ]
