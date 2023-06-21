@@ -31,9 +31,9 @@ SECRET_KEY = decouple_config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = decouple_config('DEBUG', default=False, cast=bool)
 
-CORS_ALLOWED_ORIGINS = ['https://www-frontend-sepia.vercel.app', '127.0.0.1', 'wwwbackend-production.up.railway.app']
+CORS_ALLOWED_ORIGINS = ['https://www-frontend-sepia.vercel.app', 'http://127.0.0.1', 'https://wwwbackend-production.up.railway.app']
 
-CSRF_TRUSTED_ORIGINS = ['https://www-frontend-sepia.vercel.app', '127.0.0.1', 'wwwbackend-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://www-frontend-sepia.vercel.app', 'http://127.0.0.1', 'https://wwwbackend-production.up.railway.app']
 
 ALLOWED_HOSTS = ['127.0.0.1', 'wwwbackend-production.up.railway.app',
                  'www-frontend-sepia.vercel.app']
