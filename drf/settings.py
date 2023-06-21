@@ -37,7 +37,7 @@ CORS_ALLOWED_ORIGINS  = ['https://www-frontend-sepia.vercel.app']
 
 CSRF_TRUSTED_ORIGINS = ['https://www-frontend-sepia.vercel.app']
 
-ALLOWED_HOSTS = ['127.0.0.1', 'wwwbackend-production.up.railway.app']
+ALLOWED_HOSTS = ['127.0.0.1', 'wwwbackend-production.up.railway.app', 'www-frontend-sepia.vercel.app']
 
 CSRF_COOKIE_SECURE = True
 # Application definition
