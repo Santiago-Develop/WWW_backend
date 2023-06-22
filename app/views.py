@@ -374,8 +374,5 @@ def get_available_services(request, pk):
     services = ServiceModel.objects.filter(customer_id__in=customers_ids)
     serializers = ServiceSerializer(
             services, many=True, context={'request': request})
-    print("🐍 File: app/views.py | Line: 375 | get_available_services ~ services",services)
 
-
-    print("🐍 File: app/views.py | Line: 370 | get_available_services ~ customers_ids",customers_ids)
     return Response({"error": False, "message": "Available services sent", "data": serializers.data}, status=status.HTTP_200_OK)
